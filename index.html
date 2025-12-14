@@ -1,250 +1,1113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cinematic Birthday Card</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:#1a001f;color:#fff;overflow:hidden;text-align:center}
-
-/* SCENES */
-.scene{
-  position:fixed; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column;
-  transition:opacity 1s ease;
-}
-.scene.hidden{opacity:0; pointer-events:none}
-#scene5 h2{
-  margin-bottom:40px;
-  z-index:2;
-}
-
-/* TYPEWRITER PHASE 1 */
-.type{font-size:32px; letter-spacing:2px; border-right:2px solid #fff; padding-right:6px; text-shadow:0 0 35px #ff69b4}
-
-/* PHASE 2 NAME */
-.name{
-  font-size:70px;
-  background:linear-gradient(45deg,#ffd700,#ff69b4,#ffd700);
-  background-clip:text;
-  -webkit-background-clip:text;
-  color:transparent;
-  -webkit-text-fill-color:transparent;
-  opacity:0; transform:scale(.85);
-  transition:all 2s ease;
-  text-shadow:0 0 50px rgba(255,215,0,.5);
-}
-.sub{margin-top:12px; font-size:22px; opacity:0; transition:opacity 2s ease}
-
-/* PHASE 3 MESSAGE */
-.card{
-  max-width:560px; padding:40px; border-radius:24px;
-  background:rgba(255,255,255,.08);
-  backdrop-filter:blur(14px);
-  box-shadow:0 0 60px rgba(255,105,180,.3);
-}
-.line{opacity:0; transform:translateY(10px); transition:all 1.2s ease}
-.line.show{opacity:1; transform:translateY(0)}
-
-/* BUTTONS */
-.btn{
-  margin-top:25px; padding:14px 30px; border-radius:30px;
-  border:none; font-weight:700; cursor:pointer;
-  background:linear-gradient(45deg,#ffd700,#ff69b4);
-  box-shadow:0 0 20px rgba(255,215,0,.6);
-  transition:all 0.3s ease;
-}
-.btn:hover{transform:scale(1.05); box-shadow:0 0 30px rgba(255,215,0,.8)}
-
-/* PHASE 4 CELEBRATION */
-#scene4 canvas{position:fixed; inset:0; pointer-events:none; z-index:0}
-.cta{margin-top:18px; padding:14px 30px; border-radius:30px; border:none; font-weight:700; cursor:pointer; background:linear-gradient(45deg,#ffd700,#ff69b4); box-shadow:0 0 20px rgba(255,215,0,.6); transition:all 0.3s ease}
-.cta:hover{transform:scale(1.05); box-shadow:0 0 30px rgba(255,215,0,.8)}
-
-/* PHASE 5 CAKE */
-#cake{
-  position:relative; width:220px; height:160px; background:#ff69b4; border-radius:0 0 100px 100px; margin-top:20px;
-  box-shadow:0 0 30px rgba(255,105,180,0.5);
-}
-.candle{
-  position:absolute; width:12px; height:35px; background:gold; border-radius:3px; cursor:pointer;
-  top:-35px;
-}
-.candle1{left:35px}
-.candle2{left:100px}
-.candle3{left:165px}
-.flame{
-  position:absolute; width:12px; height:12px; background:orange; border-radius:50%; top:-12px; left:0; animation:blink 0.5s infinite alternate;
-}
-@keyframes blink{from{opacity:1}to{opacity:0.3}}
-
-/* PHASE 6 LAST MESSAGE */
-#finalMessage{
-  font-size:32px; color:#ffd700; text-shadow:0 0 20px #ff69b4;
-  opacity:0; transition:opacity 1s ease;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematic Birthday Experience 🎂</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b9d;
+            --secondary: #ffd166;
+            --accent: #7b2cbf;
+            --dark: #0f0b1f;
+            --darker: #090616;
+            --light: #f8f9fa;
+            --transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 60px rgba(255, 107, 157, 0.4);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated background particles */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        /* Stellar background effect */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        
+        /* Scene container */
+        .scene {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 1;
+            transition: var(--transition);
+            z-index: 1;
+            overflow-y: auto;
+        }
+        
+        .scene.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+        
+        /* Progress indicator */
+        .progress-container {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            transition: var(--transition);
+        }
+        
+        .progress-dot.active {
+            background: var(--secondary);
+            transform: scale(1.3);
+            box-shadow: 0 0 15px var(--secondary);
+        }
+        
+        /* Typewriter effect - Scene 1 */
+        .typewriter-container {
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .typewriter-text {
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            line-height: 1.3;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            text-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            min-height: 140px;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: var(--secondary);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Name reveal - Scene 2 */
+        .name-reveal {
+            text-align: center;
+            max-width: 900px;
+        }
+        
+        .name-text {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--secondary), var(--primary), #ff9e6d);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            transition: var(--transition);
+        }
+        
+        .name-text.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            text-shadow: var(--shadow-glow);
+        }
+        
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            transition-delay: 0.3s;
+        }
+        
+        .subtitle.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Message card - Scene 3 */
+        .card-container {
+            max-width: 700px;
+            width: 90%;
+        }
+        
+        .message-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .card-title {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .message-line {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        .message-line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Celebration - Scene 4 */
+        .celebration-container {
+            text-align: center;
+            max-width: 800px;
+        }
+        
+        .celebration-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Cake - Scene 5 */
+        .cake-container {
+            text-align: center;
+            max-width: 800px;
+        }
+        
+        .cake-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--secondary);
+        }
+        
+        .cake {
+            position: relative;
+            width: 280px;
+            height: 200px;
+            margin: 0 auto 40px;
+        }
+        
+        .cake-base {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, #ff9e6d, #ff6b9d);
+            border-radius: 0 0 140px 140px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .cake-top {
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 80%;
+            height: 80px;
+            background: linear-gradient(to top, #ffd166, #ff9e6d);
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cake-decoration {
+            position: absolute;
+            top: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .sprinkle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent);
+        }
+        
+        .candle {
+            position: absolute;
+            top: -40px;
+            width: 14px;
+            height: 40px;
+            background: linear-gradient(to top, gold, orange);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .candle:hover {
+            transform: scale(1.1);
+        }
+        
+        .candle:nth-child(1) { left: 25%; }
+        .candle:nth-child(2) { left: 50%; transform: translateX(-50%); }
+        .candle:nth-child(3) { left: 75%; }
+        
+        .flame {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 25px;
+            background: linear-gradient(to top, #ff9500, #ffd166, #ff9500);
+            border-radius: 50% 50% 20% 20%;
+            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 20px rgba(255, 149, 0, 0.7);
+        }
+        
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.1) rotate(3deg); }
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Final message - Scene 6 */
+        .final-container {
+            text-align: center;
+            max-width: 900px;
+        }
+        
+        .final-message {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--secondary), var(--primary), #ff9e6d);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+        
+        .final-message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .birthday-wish {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.5);
+        }
+        
+        .btn:hover::before {
+            opacity: 1;
+        }
+        
+        .btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .btn-next {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        .btn-next.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Music controls */
+        .music-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+        
+        .music-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .music-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .scene {
+                padding: 15px;
+            }
+            
+            .message-card {
+                padding: 35px 25px;
+            }
+            
+            .card-title {
+                font-size: 1.8rem;
+            }
+            
+            .message-line {
+                font-size: 1.2rem;
+            }
+            
+            .cake {
+                width: 240px;
+                height: 170px;
+            }
+            
+            .music-controls {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .progress-container {
+                top: 20px;
+            }
+            
+            .btn {
+                padding: 16px 35px;
+                font-size: 1.1rem;
+            }
+            
+            .cake {
+                width: 200px;
+                height: 150px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- PHASE 1 -->
-<div class="scene" id="scene1">
-  <div class="type" id="typeText"></div>
-  <button class="btn" id="btn1" style="display:none" onclick="startPhase2()">Next →</button>
-</div>
-
-<!-- PHASE 2 -->
-<div class="scene hidden" id="scene2">
-  <div class="name" id="nameText">Happy Birthday</div>
-  <div class="sub" id="subText">A moment made only for you ✨</div>
-  <button class="btn" id="btn2" style="display:none" onclick="startPhase3()">Next →</button>
-</div>
-
-<!-- PHASE 3 -->
-<div class="scene hidden" id="scene3">
-  <div class="card">
-    <h2 style="margin-bottom:16px">💖 Special Message</h2>
-    <p class="line">Aaj ka din sirf ek date nahi…</p>
-    <p class="line">yeh us roshni ka celebration hai jo tum apni zindagi se failatay ho.</p>
-    <p class="line">Allah tumhein hamesha khush, sehatmand aur kamyab rakhay.</p>
-    <p class="line">Tum waqai special ho ✨</p>
-    <button class="btn" id="btn3" style="display:none" onclick="startPhase4()">Next →</button>
-  </div>
-</div>
-
-<!-- PHASE 4 CELEBRATION -->
-<div class="scene hidden" id="scene4">
-  <h1 class="name" style="opacity:1; transform:none">Celebrate 🎆</h1>
-  <button class="cta" id="btn4" style="display:none" onclick="startPhase5()">Start Party 🔥</button>
-  <canvas id="fw"></canvas>
-</div>
-
-<!-- PHASE 5 CAKE -->
-<div class="scene hidden" id="scene5">
-  <h2>🎂 Your Birthday Cake!</h2>
-  <div id="cake">
-    <div class="candle candle1"><div class="flame"></div></div>
-    <div class="candle candle2"><div class="flame"></div></div>
-    <div class="candle candle3"><div class="flame"></div></div>
-  </div>
-  <p>Tap all candles to open the cake!</p>
-</div>
-
-<!-- PHASE 6 LAST MESSAGE -->
-<div class="scene hidden" id="scene6">
-  <div id="finalMessage">🎉 Happy Birthday! May your day be magical ✨</div>
-</div>
-
-<audio id="music"><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"></audio>
-
-<script>
-/* SHORTCUTS */
-const scene1=document.getElementById("scene1");
-const scene2El=document.getElementById("scene2");
-const scene3El=document.getElementById("scene3");
-const scene4El=document.getElementById("scene4");
-const scene5El=document.getElementById("scene5");
-const scene6El=document.getElementById("scene6");
-const nameText=document.getElementById("nameText");
-const subText=document.getElementById("subText");
-
-/* TYPEWRITER PHASE 1 */
-const text="This day is not normal...";
-let i=0;
-const el=document.getElementById("typeText");
-(function type(){ 
-  if(i<text.length){el.innerHTML+=text[i++]; setTimeout(type,80)}
-  else setTimeout(()=>{document.getElementById("btn1").style.display="block"},1000);
-})();
-
-/* PHASES */
-function startPhase2(){
-  scene1.classList.add("hidden");
-  scene2El.classList.remove("hidden");
-  setTimeout(()=>{
-    nameText.style.opacity=1; nameText.style.transform="scale(1)";
-    subText.style.opacity=1;
-    setTimeout(()=>{document.getElementById("btn2").style.display="block"},1000);
-  },500);
-}
-
-function startPhase3(){
-  scene2El.classList.add("hidden");
-  scene3El.classList.remove("hidden");
-  const lines=document.querySelectorAll(".line");
-  lines.forEach((l,idx)=>setTimeout(()=>l.classList.add("show"), idx*900));
-  setTimeout(()=>{document.getElementById("btn3").style.display="block"}, lines.length*900 + 1000);
-}
-
-function startPhase4(){
-  scene3El.classList.add("hidden");
-  scene4El.classList.remove("hidden");
-  setTimeout(()=>{document.getElementById("btn4").style.display="block"},1000);
-}
-
-/* CELEBRATION */
-function startPhase5(){
-  scene4El.classList.add("hidden");
-  scene5El.classList.remove("hidden");
-  document.getElementById("music").play();
-  fireworks(); confetti();
-}
-
-/* CONFETTI */
-function confetti(){
-  for(let i=0;i<120;i++){
-    let c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=`hsl(${Math.random()*360},100%,60%)`;
-    c.style.animationDuration=(3+Math.random()*2)+"s";
-    document.body.appendChild(c);
-  }
-}
-
-/* FIREWORKS */
-const canvas=document.getElementById("fw"), ctx=canvas.getContext("2d");
-function resize(){canvas.width=innerWidth; canvas.height=innerHeight}
-resize(); addEventListener("resize",resize);
-function fireworks(){
-  let particles=[];
-  for(let i=0;i<200;i++){
-    particles.push({
-      x:innerWidth/2, y:innerHeight/2,
-      vx:(Math.random()-0.5)*8, vy:(Math.random()-0.7)*8,
-      life:60+Math.random()*40
-    });
-  }
-  (function anim(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life--;
-      ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
-      ctx.fillRect(p.x,p.y,3,3);
-    });
-    particles=particles.filter(p=>p.life>0);
-    if(particles.length) requestAnimationFrame(anim);
-  })();
-}
-
-/* PHASE 5 CAKE INTERACTION */
-let candlesLit=3;
-const candles=document.querySelectorAll(".candle");
-candles.forEach(c=>{
-  c.onclick=function(){
-    this.querySelector(".flame").style.display="none";
-    candlesLit--;
-    if(candlesLit===0){
-      // cake opened → show phase 6
-      scene5El.classList.add("hidden");
-      scene6El.classList.remove("hidden");
-      const finalMsg=document.getElementById("finalMessage");
-      setTimeout(()=>{finalMsg.style.opacity=1},500);
-    }
-  }
-});
-</script>
+    <!-- Animated background particles -->
+    <div id="particles-js"></div>
+    
+    <!-- Stellar background -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Progress indicator -->
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-dot active" data-scene="1"></div>
+        <div class="progress-dot" data-scene="2"></div>
+        <div class="progress-dot" data-scene="3"></div>
+        <div class="progress-dot" data-scene="4"></div>
+        <div class="progress-dot" data-scene="5"></div>
+        <div class="progress-dot" data-scene="6"></div>
+    </div>
+    
+    <!-- Scene 1: Typewriter intro -->
+    <div class="scene" id="scene1">
+        <div class="typewriter-container">
+            <div class="typewriter-text" id="typewriterText"></div>
+            <div class="cursor" id="cursor"></div>
+            <button class="btn btn-next" id="btnNext1" onclick="nextScene()">
+                Continue <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Scene 2: Name reveal -->
+    <div class="scene hidden" id="scene2">
+        <div class="name-reveal">
+            <h1 class="name-text" id="nameText">Happy Birthday!</h1>
+            <p class="subtitle" id="subtitle">A cinematic experience created just for you ✨</p>
+            <button class="btn btn-next" id="btnNext2" onclick="nextScene()">
+                Discover Your Message <i class="fas fa-gift"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Scene 3: Special message -->
+    <div class="scene hidden" id="scene3">
+        <div class="card-container">
+            <div class="message-card">
+                <h2 class="card-title"><i class="fas fa-heart"></i> Special Message</h2>
+                <p class="message-line" id="line1">Aaj ka din sirf ek date nahi…</p>
+                <p class="message-line" id="line2">yeh us roshni ka celebration hai jo tum apni zindagi se failatay ho.</p>
+                <p class="message-line" id="line3">Allah tumhein hamesha khush, sehatmand aur kamyab rakhay.</p>
+                <p class="message-line" id="line4">Tum waqai special ho ✨</p>
+                <button class="btn btn-next" id="btnNext3" onclick="nextScene()">
+                    Let's Celebrate! <i class="fas fa-party-horn"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scene 4: Celebration -->
+    <div class="scene hidden" id="scene4">
+        <div class="celebration-container">
+            <h1 class="celebration-title">Time to Celebrate! 🎆</h1>
+            <p class="birthday-wish">Get ready for some birthday magic! Click below to start the party with confetti, fireworks, and music!</p>
+            <button class="btn" id="btnNext4" onclick="nextScene()">
+                Start the Party! <i class="fas fa-fireworks"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Scene 5: Interactive cake -->
+    <div class="scene hidden" id="scene5">
+        <div class="cake-container">
+            <h2 class="cake-title">🎂 Make a Wish & Blow Out the Candles!</h2>
+            <div class="cake">
+                <div class="cake-base"></div>
+                <div class="cake-top"></div>
+                <div class="cake-decoration">
+                    <div class="sprinkle" style="background-color:#ff6b9d"></div>
+                    <div class="sprinkle" style="background-color:#ffd166"></div>
+                    <div class="sprinkle" style="background-color:#7b2cbf"></div>
+                    <div class="sprinkle" style="background-color:#ff9e6d"></div>
+                </div>
+                <div class="candle" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                </div>
+                <div class="candle" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                </div>
+                <div class="candle" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                </div>
+            </div>
+            <p class="instructions">Click each candle to blow it out. When all candles are out, your special wish will be revealed!</p>
+            <p id="candleCounter">Candles remaining: <span id="candlesLeft">3</span></p>
+        </div>
+    </div>
+    
+    <!-- Scene 6: Final message -->
+    <div class="scene hidden" id="scene6">
+        <div class="final-container">
+            <h1 class="final-message" id="finalMessage">Happy Birthday! 🎉</h1>
+            <p class="birthday-wish">May this year bring you endless joy, success in all your endeavors, and memories that last a lifetime. You deserve the world and more! ✨</p>
+            <button class="btn" onclick="restartExperience()">
+                <i class="fas fa-redo"></i> Experience Again
+            </button>
+        </div>
+    </div>
+    
+    <!-- Music controls -->
+    <div class="music-controls">
+        <div class="music-btn" id="musicToggle" onclick="toggleMusic()">
+            <i class="fas fa-volume-up" id="musicIcon"></i>
+        </div>
+    </div>
+    
+    <!-- Audio elements -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-happy-birthday-to-you-443.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="candleSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-candle-blow-737.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="confettiSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-party-horn-sound-2927.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // State management
+        const state = {
+            currentScene: 1,
+            totalScenes: 6,
+            musicPlaying: false,
+            candlesLit: 3,
+            typewriterTexts: [
+                "Today is not just another day...",
+                "It's a celebration of someone extraordinary...",
+                "Someone who brings light wherever they go...",
+                "Get ready for a special birthday experience!",
+            ]
+        };
+        
+        // DOM Elements
+        const scenes = document.querySelectorAll('.scene');
+        const progressDots = document.querySelectorAll('.progress-dot');
+        const typewriterEl = document.getElementById('typewriterText');
+        const cursorEl = document.getElementById('cursor');
+        const nameTextEl = document.getElementById('nameText');
+        const subtitleEl = document.getElementById('subtitle');
+        const messageLines = document.querySelectorAll('.message-line');
+        const finalMessageEl = document.getElementById('finalMessage');
+        const candlesLeftEl = document.getElementById('candlesLeft');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const candleSound = document.getElementById('candleSound');
+        const confettiSound = document.getElementById('confettiSound');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        
+        // Initialize the experience
+        function init() {
+            createStars();
+            initParticles();
+            startTypewriter();
+            updateProgress();
+            
+            // Set the name (you can customize this)
+            nameTextEl.textContent = "Happy Birthday!";
+            
+            // Preload audio
+            backgroundMusic.volume = 0.5;
+            candleSound.volume = 0.7;
+            confettiSound.volume = 0.6;
+        }
+        
+        // Create starry background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                star.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Initialize particles.js background
+        function initParticles() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 60, density: { enable: true, value_area: 800 } },
+                    color: { value: ["#ff6b9d", "#ffd166", "#7b2cbf"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#ff6b9d",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                },
+                retina_detect: true
+            });
+        }
+        
+        // Typewriter effect for scene 1
+        function startTypewriter() {
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typingSpeed = 80;
+            
+            function type() {
+                const currentText = state.typewriterTexts[textIndex];
+                
+                if (isDeleting) {
+                    // Deleting text
+                    typewriterEl.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                    typingSpeed = 40;
+                } else {
+                    // Typing text
+                    typewriterEl.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                    typingSpeed = 80;
+                }
+                
+                // If text is fully typed
+                if (!isDeleting && charIndex === currentText.length) {
+                    // If this is the last text, show button and stop
+                    if (textIndex === state.typewriterTexts.length - 1) {
+                        setTimeout(() => {
+                            document.getElementById('btnNext1').classList.add('visible');
+                        }, 1000);
+                        return;
+                    }
+                    
+                    // Wait then start deleting
+                    isDeleting = true;
+                    typingSpeed = 1000;
+                }
+                // If text is fully deleted
+                else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % state.typewriterTexts.length;
+                    typingSpeed = 500;
+                }
+                
+                setTimeout(type, typingSpeed);
+            }
+            
+            // Start typing
+            setTimeout(type, 500);
+        }
+        
+        // Navigate to next scene
+        function nextScene() {
+            // Hide current scene
+            scenes[state.currentScene - 1].classList.add('hidden');
+            
+            // Update scene counter
+            state.currentScene = (state.currentScene % state.totalScenes) + 1;
+            
+            // Show next scene
+            scenes[state.currentScene - 1].classList.remove('hidden');
+            
+            // Update progress indicator
+            updateProgress();
+            
+            // Scene-specific actions
+            handleSceneChange(state.currentScene);
+        }
+        
+        // Handle scene-specific animations and effects
+        function handleSceneChange(sceneNumber) {
+            switch(sceneNumber) {
+                case 2:
+                    // Name reveal animation
+                    setTimeout(() => {
+                        nameTextEl.classList.add('revealed');
+                        subtitleEl.classList.add('visible');
+                        
+                        setTimeout(() => {
+                            document.getElementById('btnNext2').classList.add('visible');
+                        }, 1500);
+                    }, 300);
+                    break;
+                    
+                case 3:
+                    // Message line animations
+                    messageLines.forEach((line, index) => {
+                        setTimeout(() => {
+                            line.classList.add('visible');
+                            
+                            if (index === messageLines.length - 1) {
+                                setTimeout(() => {
+                                    document.getElementById('btnNext3').classList.add('visible');
+                                }, 800);
+                            }
+                        }, index * 1000);
+                    });
+                    break;
+                    
+                case 4:
+                    // Celebration scene - show button immediately
+                    setTimeout(() => {
+                        document.getElementById('btnNext4').classList.add('visible');
+                    }, 500);
+                    break;
+                    
+                case 5:
+                    // Start celebration effects
+                    startCelebration();
+                    break;
+                    
+                case 6:
+                    // Final message reveal
+                    setTimeout(() => {
+                        finalMessageEl.classList.add('visible');
+                    }, 500);
+                    break;
+            }
+        }
+        
+        // Start celebration effects
+        function startCelebration() {
+            // Play music if not already playing
+            if (!state.musicPlaying) {
+                backgroundMusic.play().catch(e => console.log("Autoplay prevented:", e));
+                state.musicPlaying = true;
+                musicIcon.className = 'fas fa-volume-up';
+            }
+            
+            // Play confetti sound
+            confettiSound.currentTime = 0;
+            confettiSound.play();
+            
+            // Create confetti
+            createConfetti();
+            
+            // Create fireworks
+            createFireworks();
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const confettiCount = 200;
+            const container = document.querySelector('.cake-container');
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.position = 'absolute';
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = confetti.style.width;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`;
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = '-20px';
+                confetti.style.opacity = '0.9';
+                confetti.style.zIndex = '9999';
+                
+                // Animation
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                
+                // Add to DOM
+                document.body.appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+            
+            // Add CSS for confetti animation
+            if (!document.getElementById('confetti-style')) {
+                const style = document.createElement('style');
+                style.id = 'confetti-style';
+                style.textContent = `
+                    @keyframes fall {
+                        0% { transform: translateY(0) rotate(0deg); }
+                        100% { transform: translateY(100vh) rotate(${Math.random() * 360}deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Create fireworks effect
+        function createFireworks() {
+            const fireworkCount = 8;
+            
+            for (let i = 0; i < fireworkCount; i++) {
+                setTimeout(() => {
+                    createSingleFirework();
+                }, i * 800);
+            }
+        }
+        
+        // Create a single firework explosion
+        function createSingleFirework() {
+            const particleCount = 60;
+            const x = Math.random() * 80 + 10; // 10% to 90%
+            const y = Math.random() * 60 + 20; // 20% to 80%
+            const hue = Math.random() * 360;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                particle.style.position = 'fixed';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.backgroundColor = `hsl(${hue}, 100%, 60%)`;
+                particle.style.borderRadius = '50%';
+                particle.style.left = `${x}vw`;
+                particle.style.top = `${y}vh`;
+                particle.style.opacity = '1';
+                particle.style.zIndex = '9998';
+                particle.style.boxShadow = `0 0 10px hsl(${hue}, 100%, 60%)`;
+                
+                // Animation
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 3 + 2;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                let posX = 0;
+                let posY = 0;
+                let opacity = 1;
+                
+                function animate() {
+                    posX += vx;
+                    posY += vy;
+                    opacity -= 0.02;
+                    
+                    particle.style.transform = `translate(${posX}vw, ${posY}vh)`;
+                    particle.style.opacity = opacity;
+                    
+                    if (opacity > 0) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        particle.remove();
+                    }
+                }
+                
+                document.body.appendChild(particle);
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        // Blow out a candle
+        function blowCandle(candle) {
+            const flame = candle.querySelector('.flame');
+            
+            // If already blown out, do nothing
+            if (!flame || flame.style.display === 'none') return;
+            
+            // Play sound
+            candleSound.currentTime = 0;
+            candleSound.play();
+            
+            // Hide flame with animation
+            flame.style.transition = 'all 0.3s ease';
+            flame.style.transform = 'translateX(-50%) scale(0)';
+            flame.style.opacity = '0';
+            
+            setTimeout(() => {
+                flame.style.display = 'none';
+                
+                // Update candle count
+                state.candlesLit--;
+                candlesLeftEl.textContent = state.candlesLit;
+                
+                // If all candles are blown out
+                if (state.candlesLit === 0) {
+                    setTimeout(() => {
+                        nextScene(); // Go to final scene
+                    }, 1000);
+                }
+            }, 300);
+        }
+        
+        // Toggle background music
+        function toggleMusic() {
+            if (state.musicPlaying) {
+                backgroundMusic.pause();
+                musicIcon.className = 'fas fa-volume-mute';
+            } else {
+                backgroundMusic.play().catch(e => console.log("Play prevented:", e));
+                musicIcon.className = 'fas fa-volume-up';
+            }
+            state.musicPlaying = !state.musicPlaying;
+        }
+        
+        // Update progress indicator
+        function updateProgress() {
+            progressDots.forEach((dot, index) => {
+                if (index < state.currentScene) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        // Restart the experience
+        function restartExperience() {
+            // Reset state
+            state.currentScene = 1;
+            state.candlesLit = 3;
+            
+            // Reset all scenes
+            scenes.forEach((scene, index) => {
+                if (index === 0) {
+                    scene.classList.remove('hidden');
+                } else {
+                    scene.classList.add('hidden');
+                }
+            });
+            
+            // Reset candles
+            document.querySelectorAll('.flame').forEach(flame => {
+                flame.style.display = 'block';
+                flame.style.opacity = '1';
+                flame.style.transform = 'translateX(-50%) scale(1)';
+            });
+            
+            // Reset message lines
+            messageLines.forEach(line => line.classList.remove('visible'));
+            
+            // Reset buttons
+            document.querySelectorAll('.btn-next').forEach(btn => btn.classList.remove('visible'));
+            
+            // Reset name and subtitle
+            nameTextEl.classList.remove('revealed');
+            subtitleEl.classList.remove('visible');
+            
+            // Reset final message
+            finalMessageEl.classList.remove('visible');
+            
+            // Reset typewriter
+            typewriterEl.textContent = '';
+            document.getElementById('btnNext1').classList.remove('visible');
+            startTypewriter();
+            
+            // Update progress
+            updateProgress();
+            
+            // Update candle counter
+            candlesLeftEl.textContent = state.candlesLit;
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', init);
+        
+        // Add CSS for confetti and fireworks
+        window.addEventListener('load', () => {
+            const style = document.createElement('style');
+            style.textContent = `
+                .confetti-piece {
+                    pointer-events: none;
+                }
+                .firework-particle {
+                    pointer-events: none;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 </html>

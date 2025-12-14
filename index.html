@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cinematic Birthday Card</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#1a001f;color:#fff;overflow:hidden;text-align:center}
+
+/* SCENES */
+.scene{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column;
+  transition:opacity 1s ease;
+}
+.scene.hidden{opacity:0; pointer-events:none}
+#scene5 h2{
+  margin-bottom:40px;
+  z-index:2;
+}
+
+/* TYPEWRITER PHASE 1 */
+.type{font-size:32px; letter-spacing:2px; border-right:2px solid #fff; padding-right:6px; text-shadow:0 0 35px #ff69b4}
+
+/* PHASE 2 NAME */
+.name{
+  font-size:70px;
+  background:linear-gradient(45deg,#ffd700,#ff69b4,#ffd700);
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  opacity:0; transform:scale(.85);
+  transition:all 2s ease;
+  text-shadow:0 0 50px rgba(255,215,0,.5);
+}
+.sub{margin-top:12px; font-size:22px; opacity:0; transition:opacity 2s ease}
+
+/* PHASE 3 MESSAGE */
+.card{
+  max-width:560px; padding:40px; border-radius:24px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 60px rgba(255,105,180,.3);
+}
+.line{opacity:0; transform:translateY(10px); transition:all 1.2s ease}
+.line.show{opacity:1; transform:translateY(0)}
+
+/* BUTTONS */
+.btn{
+  margin-top:25px; padding:14px 30px; border-radius:30px;
+  border:none; font-weight:700; cursor:pointer;
+  background:linear-gradient(45deg,#ffd700,#ff69b4);
+  box-shadow:0 0 20px rgba(255,215,0,.6);
+  transition:all 0.3s ease;
+}
+.btn:hover{transform:scale(1.05); box-shadow:0 0 30px rgba(255,215,0,.8)}
+
+/* PHASE 4 CELEBRATION */
+#scene4 canvas{position:fixed; inset:0; pointer-events:none; z-index:0}
+.cta{margin-top:18px; padding:14px 30px; border-radius:30px; border:none; font-weight:700; cursor:pointer; background:linear-gradient(45deg,#ffd700,#ff69b4); box-shadow:0 0 20px rgba(255,215,0,.6); transition:all 0.3s ease}
+.cta:hover{transform:scale(1.05); box-shadow:0 0 30px rgba(255,215,0,.8)}
+
+/* PHASE 5 CAKE */
+#cake{
+  position:relative; width:220px; height:160px; background:#ff69b4; border-radius:0 0 100px 100px; margin-top:20px;
+  box-shadow:0 0 30px rgba(255,105,180,0.5);
+}
+.candle{
+  position:absolute; width:12px; height:35px; background:gold; border-radius:3px; cursor:pointer;
+  top:-35px;
+}
+.candle1{left:35px}
+.candle2{left:100px}
+.candle3{left:165px}
+.flame{
+  position:absolute; width:12px; height:12px; background:orange; border-radius:50%; top:-12px; left:0; animation:blink 0.5s infinite alternate;
+}
+@keyframes blink{from{opacity:1}to{opacity:0.3}}
+
+/* PHASE 6 LAST MESSAGE */
+#finalMessage{
+  font-size:32px; color:#ffd700; text-shadow:0 0 20px #ff69b4;
+  opacity:0; transition:opacity 1s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- PHASE 1 -->
+<div class="scene" id="scene1">
+  <div class="type" id="typeText"></div>
+  <button class="btn" id="btn1" style="display:none" onclick="startPhase2()">Next →</button>
+</div>
+
+<!-- PHASE 2 -->
+<div class="scene hidden" id="scene2">
+  <div class="name" id="nameText">Happy Birthday</div>
+  <div class="sub" id="subText">A moment made only for you ✨</div>
+  <button class="btn" id="btn2" style="display:none" onclick="startPhase3()">Next →</button>
+</div>
+
+<!-- PHASE 3 -->
+<div class="scene hidden" id="scene3">
+  <div class="card">
+    <h2 style="margin-bottom:16px">💖 Special Message</h2>
+    <p class="line">Aaj ka din sirf ek date nahi…</p>
+    <p class="line">yeh us roshni ka celebration hai jo tum apni zindagi se failatay ho.</p>
+    <p class="line">Allah tumhein hamesha khush, sehatmand aur kamyab rakhay.</p>
+    <p class="line">Tum waqai special ho ✨</p>
+    <button class="btn" id="btn3" style="display:none" onclick="startPhase4()">Next →</button>
+  </div>
+</div>
+
+<!-- PHASE 4 CELEBRATION -->
+<div class="scene hidden" id="scene4">
+  <h1 class="name" style="opacity:1; transform:none">Celebrate 🎆</h1>
+  <button class="cta" id="btn4" style="display:none" onclick="startPhase5()">Start Party 🔥</button>
+  <canvas id="fw"></canvas>
+</div>
+
+<!-- PHASE 5 CAKE -->
+<div class="scene hidden" id="scene5">
+  <h2>🎂 Your Birthday Cake!</h2>
+  <div id="cake">
+    <div class="candle candle1"><div class="flame"></div></div>
+    <div class="candle candle2"><div class="flame"></div></div>
+    <div class="candle candle3"><div class="flame"></div></div>
+  </div>
+  <p>Tap all candles to open the cake!</p>
+</div>
+
+<!-- PHASE 6 LAST MESSAGE -->
+<div class="scene hidden" id="scene6">
+  <div id="finalMessage">🎉 Happy Birthday! May your day be magical ✨</div>
+</div>
+
+<audio id="music"><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"></audio>
+
+<script>
+/* SHORTCUTS */
+const scene1=document.getElementById("scene1");
+const scene2El=document.getElementById("scene2");
+const scene3El=document.getElementById("scene3");
+const scene4El=document.getElementById("scene4");
+const scene5El=document.getElementById("scene5");
+const scene6El=document.getElementById("scene6");
+const nameText=document.getElementById("nameText");
+const subText=document.getElementById("subText");
+
+/* TYPEWRITER PHASE 1 */
+const text="This day is not normal...";
+let i=0;
+const el=document.getElementById("typeText");
+(function type(){ 
+  if(i<text.length){el.innerHTML+=text[i++]; setTimeout(type,80)}
+  else setTimeout(()=>{document.getElementById("btn1").style.display="block"},1000);
+})();
+
+/* PHASES */
+function startPhase2(){
+  scene1.classList.add("hidden");
+  scene2El.classList.remove("hidden");
+  setTimeout(()=>{
+    nameText.style.opacity=1; nameText.style.transform="scale(1)";
+    subText.style.opacity=1;
+    setTimeout(()=>{document.getElementById("btn2").style.display="block"},1000);
+  },500);
+}
+
+function startPhase3(){
+  scene2El.classList.add("hidden");
+  scene3El.classList.remove("hidden");
+  const lines=document.querySelectorAll(".line");
+  lines.forEach((l,idx)=>setTimeout(()=>l.classList.add("show"), idx*900));
+  setTimeout(()=>{document.getElementById("btn3").style.display="block"}, lines.length*900 + 1000);
+}
+
+function startPhase4(){
+  scene3El.classList.add("hidden");
+  scene4El.classList.remove("hidden");
+  setTimeout(()=>{document.getElementById("btn4").style.display="block"},1000);
+}
+
+/* CELEBRATION */
+function startPhase5(){
+  scene4El.classList.add("hidden");
+  scene5El.classList.remove("hidden");
+  document.getElementById("music").play();
+  fireworks(); confetti();
+}
+
+/* CONFETTI */
+function confetti(){
+  for(let i=0;i<120;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    c.style.animationDuration=(3+Math.random()*2)+"s";
+    document.body.appendChild(c);
+  }
+}
+
+/* FIREWORKS */
+const canvas=document.getElementById("fw"), ctx=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth; canvas.height=innerHeight}
+resize(); addEventListener("resize",resize);
+function fireworks(){
+  let particles=[];
+  for(let i=0;i<200;i++){
+    particles.push({
+      x:innerWidth/2, y:innerHeight/2,
+      vx:(Math.random()-0.5)*8, vy:(Math.random()-0.7)*8,
+      life:60+Math.random()*40
+    });
+  }
+  (function anim(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life--;
+      ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+      ctx.fillRect(p.x,p.y,3,3);
+    });
+    particles=particles.filter(p=>p.life>0);
+    if(particles.length) requestAnimationFrame(anim);
+  })();
+}
+
+/* PHASE 5 CAKE INTERACTION */
+let candlesLit=3;
+const candles=document.querySelectorAll(".candle");
+candles.forEach(c=>{
+  c.onclick=function(){
+    this.querySelector(".flame").style.display="none";
+    candlesLit--;
+    if(candlesLit===0){
+      // cake opened → show phase 6
+      scene5El.classList.add("hidden");
+      scene6El.classList.remove("hidden");
+      const finalMsg=document.getElementById("finalMessage");
+      setTimeout(()=>{finalMsg.style.opacity=1},500);
+    }
+  }
+});
+</script>
+</body>
+</html>
